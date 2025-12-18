@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-#define SENTINEL '\n'
-
 enum class loop_control {
   CONTINUE,
   STOP,
