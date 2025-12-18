@@ -51,7 +51,7 @@ loop_control input_loop() {
   std::cout << "\n\nPlease input a sentence. If you want to exit, just hit "
             << "enter." << std::endl;
   std::getline(std::cin, input);
-  if (input.at(0) == SENTINEL)
+  if (input.size() == 0)
     return loop_control::STOP;
 
   const int total_keystrokes = keystrokes(input);
