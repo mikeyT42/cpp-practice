@@ -1,9 +1,7 @@
-#include <cctype>
 #include <cstdlib>
 #include <iomanip>
 #include <ios>
 #include <iostream>
-#include <string>
 
 #define SENTINEL -1
 
