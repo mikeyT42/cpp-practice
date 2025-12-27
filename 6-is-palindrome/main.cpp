@@ -8,13 +8,9 @@ enum class loop_control {
   STOP,
 };
 
-enum class validation_code {
-  OK,
-  NO_INPUT,
-  INPUT_ERR,
-};
-
 loop_control input_loop();
+std::string prepare_input(std::string_view input);
+bool is_palindrome(std::string_view prepared_input);
 
 // -----------------------------------------------------------------------------
 int main(void) {
@@ -22,7 +18,7 @@ int main(void) {
   std::cout
       << "====================================================================="
       << '\n'
-      << "\tWelcome to the Summer and Averager\n"
+      << "\tWelcome to the Palindrome Checker\n"
       << "====================================================================="
       << '\n'
       << std::endl;
