@@ -42,8 +42,8 @@ loop_control input_loop();
 validation_code validate(std::string_view input,
                          std::array<double, MAX_NUMBERS> &parsed_numbers,
                          short &numbers_len);
-void sum_and_count(const std::array<double, MAX_NUMBERS> &numbers, sums &sums,
-                   counts &counts);
+void sum_and_count(const std::array<double, MAX_NUMBERS> &numbers,
+                   short &numbers_len, sums &sums, counts &counts);
 void average(const sums &sums, const counts &counts, averages &averages);
 void print_table(const sums &sums, const counts &counts,
                  const averages &averages);
@@ -96,12 +96,16 @@ loop_control input_loop() {
     return loop_control::CONTINUE;
   case validation_code::OK:
     // Our parsed input is inside the numbers array.
+    // So is the numbers_len.
     break;
   }
 
   sums sums{};
   counts counts{};
   averages averages{};
+  sum_and_count(numbers, numbers_len, sums, counts);
+  average(sums, counts, averages);
+  print_table(sums, counts, averages);
 
   return loop_control::CONTINUE;
 }
