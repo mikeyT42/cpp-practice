@@ -1,5 +1,6 @@
 #include <array>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -134,4 +135,56 @@ validation_code validate(std::string_view input,
     return validation_code::INPUT_ERR;
 
   return validation_code::OK;
+}
+
+// -----------------------------------------------------------------------------
+void sum_and_count(const std::array<double, MAX_NUMBERS> &numbers,
+                   short &numbers_len, sums &sums, counts &counts) {
+  for (int i = 0; i < numbers_len; i++) {
+    if (numbers[i] >= 0) {
+      sums.positive += numbers[i];
+      counts.positive++;
+    } else {
+      sums.negative += numbers[i];
+      counts.negative++;
+    }
+    sums.overall += numbers[i];
+    counts.overall++;
+  }
+}
+
+// -----------------------------------------------------------------------------
+void average(const sums &sums, const counts &counts, averages &averages) {
+  if (counts.positive == 0)
+    averages.positive = 0;
+  else
+    averages.positive = sums.positive / counts.positive;
+
+  if (counts.negative == 0)
+    averages.negative = 0;
+  else
+    averages.negative = sums.negative / counts.negative;
+
+  if (sums.overall == 0 || counts.overall == 0)
+    averages.overall = 0;
+  else
+    averages.overall = sums.overall / counts.overall;
+}
+
+// -----------------------------------------------------------------------------
+void print_table(const sums &sums, const counts &counts,
+                 const averages &averages) {
+  std::cout << "\nStatistics:\n"
+            << std::setw(18) << "Number:" << std::setw(16)
+            << "Total:" << std::setw(15) << "Average:\n"
+            << "Positive:" << std::setw(9) << counts.positive << std::setw(16)
+            << std::setprecision(3) << sums.positive << std::setw(14)
+            << std::setprecision(3) << averages.positive << "\n"
+            << "Negative:" << std::setw(9) << counts.negative << std::setw(16)
+            << std::setprecision(3) << sums.negative << std::setw(14)
+            << std::setprecision(3) << averages.negative << "\n"
+            << "Overall:" << std::setw(10) << counts.overall << std::setw(16)
+            << std::setprecision(3) << sums.overall << std::setw(14)
+            << std::setprecision(3) << averages.overall << "\n"
+            << std::endl;
 }
