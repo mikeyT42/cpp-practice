@@ -40,7 +40,8 @@ struct averages {
 
 loop_control input_loop();
 validation_code validate(std::string_view input,
-                         std::array<double, MAX_NUMBERS> &parsed_numbers);
+                         std::array<double, MAX_NUMBERS> &parsed_numbers,
+                         short &numbers_len);
 void sum_and_count(const std::array<double, MAX_NUMBERS> &numbers, sums &sums,
                    counts &counts);
 void average(const sums &sums, const counts &counts, averages &averages);
@@ -83,8 +84,9 @@ loop_control input_loop() {
   std::string input;
   std::getline(std::cin, input);
   std::array<double, MAX_NUMBERS> numbers{};
+  short numbers_len = 0;
 
-  const validation_code code = validate(input, numbers);
+  const validation_code code = validate(input, numbers, numbers_len);
   switch (code) {
   case validation_code::NO_INPUT:
     return loop_control::STOP;
@@ -93,33 +95,38 @@ loop_control input_loop() {
               << std::endl;
     return loop_control::CONTINUE;
   case validation_code::OK:
+    // Our parsed input is inside the numbers array.
     break;
   }
+
+  sums sums{};
+  counts counts{};
+  averages averages{};
 
   return loop_control::CONTINUE;
 }
 
 // -----------------------------------------------------------------------------
 validation_code validate(std::string_view input,
-                         std::array<double, MAX_NUMBERS> &parsed_numbers) {
+                         std::array<double, MAX_NUMBERS> &parsed_numbers,
+                         short &numbers_len) {
   if (input.empty())
     return validation_code::NO_INPUT;
 
   std::istringstream line(input.data());
   std::string token;
-  short total_parsed = 0;
 
   while (line >> token) {
     std::istringstream token_stream(token);
     double parsed_number;
     if (token_stream >> parsed_number &&
-        total_parsed < parsed_numbers.max_size()) {
-      parsed_numbers[total_parsed] = parsed_number;
-      total_parsed++;
+        numbers_len < parsed_numbers.max_size()) {
+      parsed_numbers[numbers_len] = parsed_number;
+      numbers_len++;
     }
   }
 
-  if (total_parsed == 0)
+  if (numbers_len == 0)
     return validation_code::INPUT_ERR;
 
   return validation_code::OK;
