@@ -120,5 +120,8 @@ validation_code validate(std::string_view input,
     }
   }
 
+  if (parsed_numbers.size() == 0)
+    return validation_code::INPUT_ERR;
+
   return validation_code::OK;
 }
