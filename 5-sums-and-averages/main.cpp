@@ -116,11 +116,10 @@ validation_code validate(std::string_view input,
         total_parsed < parsed_numbers.max_size()) {
       parsed_numbers[total_parsed] = parsed_number;
       total_parsed++;
-      std::cout << "parsed_number = " << parsed_number << std::endl;
     }
   }
 
-  if (parsed_numbers.size() == 0)
+  if (total_parsed == 0)
     return validation_code::INPUT_ERR;
 
   return validation_code::OK;
