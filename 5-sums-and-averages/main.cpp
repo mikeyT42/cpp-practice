@@ -106,12 +106,18 @@ validation_code validate(std::string_view input,
     return validation_code::NO_INPUT;
 
   std::istringstream line(input.data());
-  double parsed_number;
+  std::string token;
+  short total_parsed = 0;
 
-  for (short i = 0; line >> parsed_number && i < parsed_numbers.max_size();
-       i++) {
-    parsed_numbers[i] = parsed_number;
-    std::cout << "parsed_number = " << parsed_number << std::endl;
+  while (line >> token) {
+    std::istringstream token_stream(token);
+    double parsed_number;
+    if (token_stream >> parsed_number &&
+        total_parsed < parsed_numbers.max_size()) {
+      parsed_numbers[total_parsed] = parsed_number;
+      total_parsed++;
+      std::cout << "parsed_number = " << parsed_number << std::endl;
+    }
   }
 
   return validation_code::OK;
