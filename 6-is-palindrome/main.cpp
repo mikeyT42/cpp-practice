@@ -77,5 +77,12 @@ std::string prepare_input(std::string_view input) {
 
 // -----------------------------------------------------------------------------
 bool is_palindrome(std::string_view prepared_input) {
-    prepared_input.begin()
+  for (auto left_finger = prepared_input.cbegin(),
+            right_finger = prepared_input.cend() - 1;
+       left_finger != right_finger && left_finger < right_finger;
+       left_finger++, right_finger--) {
+    if (*left_finger != *right_finger)
+      return false;
+  }
+  return true;
 }
