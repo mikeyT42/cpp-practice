@@ -39,8 +39,8 @@ public:
 std::string point::to_string() const {
   std::ostringstream ss;
   ss << "point {\n"
-     << std::setw(4) << std::right << "x = " << this->x << '\n'
-     << std::setw(4) << "y = " << this->y << '\n'
+     << "  x = " << this->x << '\n'
+     << "  y = " << this->y << '\n'
      << '}' << std::endl;
   return ss.str();
 }
@@ -130,18 +130,18 @@ validation_result validate(std::string_view input) {
   while (line >> token) {
     std::istringstream token_stream(token);
     int parsed_number;
-    if (num_points >= MAX_POINTS)
-      return validation_code::TOO_MANY;
     if (token_stream >> parsed_number) {
+      if (num_points >= MAX_POINTS)
+        return validation_code::TOO_MANY;
       points[num_points] = parsed_number;
       num_points++;
     }
   }
 
-  if (num_points < MAX_POINTS)
-    return validation_code::NOT_ENOUGH;
   if (num_points == 0)
     return validation_code::INPUT_ERR;
+  if (num_points < MAX_POINTS)
+    return validation_code::NOT_ENOUGH;
 
   return std::make_tuple(points[0], points[1]);
 }
