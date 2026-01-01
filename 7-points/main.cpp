@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -107,7 +108,10 @@ loop_control input_loop() {
     };
   }
 
-  const auto point_pair = std::get<std::tuple<int, int>>(result);
+  const auto [x, y] = std::get<std::tuple<int, int>>(result);
+  const std::unique_ptr<point> p = std::make_unique<point>(x, y);
+
+  std::cout << p->to_string() << std::endl;
 
   return loop_control::CONTINUE;
 }
