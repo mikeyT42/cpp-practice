@@ -39,7 +39,7 @@ public:
 std::string point::to_string() const {
   std::ostringstream ss;
   ss << "point {\n"
-     << std::setw(4) << "x = " << this->x << '\n'
+     << std::setw(4) << std::right << "x = " << this->x << '\n'
      << std::setw(4) << "y = " << this->y << '\n'
      << '}' << std::endl;
   return ss.str();
