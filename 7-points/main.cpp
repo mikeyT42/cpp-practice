@@ -4,7 +4,8 @@
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <strstream>
+#include <tuple>
+#include <variant>
 
 #define SENTINEL '\n'
 
@@ -15,12 +16,13 @@ enum class loop_control {
 };
 
 enum class validation_code {
-  OK,
   NO_INPUT,
   TOO_MANY,
   NOT_ENOUGH,
   INPUT_ERR,
 };
+
+using validation_result = std::variant<std::tuple<int, int>, validation_code>;
 
 // -----------------------------------------------------------------------------
 class point {
@@ -42,10 +44,10 @@ std::string point::to_string() const {
   return ss.str();
 }
 
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 loop_control input_loop();
-validation_code validate(std::string_view input,
-                         std::array<double, MAX_NUMBERS> &parsed_numbers,
-                         short &numbers_len);
+validation_result validate(std::string_view input);
 
 // -----------------------------------------------------------------------------
 int main(void) {
@@ -53,7 +55,7 @@ int main(void) {
   std::cout
       << "====================================================================="
       << '\n'
-      << "\tWelcome to the Palindrome Checker\n"
+      << "\tWelcome the Point Inputter\n"
       << "====================================================================="
       << '\n'
       << std::endl;
@@ -72,4 +74,70 @@ int main(void) {
       << std::endl;
 
   return EXIT_SUCCESS;
+}
+
+// -----------------------------------------------------------------------------
+loop_control input_loop() {
+  std::cout
+      << "Please input 2 integers, an x and y value, for a point in space.\n"
+      << std::endl;
+  std::string input;
+  std::getline(std::cin, input);
+
+  auto result = validate(input);
+
+  if (auto *error = std::get_if<validation_code>(&result)) {
+    switch (*error) {
+    case validation_code::NO_INPUT:
+      return loop_control::STOP;
+    case validation_code::NOT_ENOUGH:
+      std::cout << "You did not input enough points, please try again.\n"
+                << std::endl;
+      return loop_control::CONTINUE;
+    case validation_code::TOO_MANY:
+      std::cout << "You input too many numbers to create a point,\n"
+                << "please try again.\n"
+                << std::endl;
+      return loop_control::CONTINUE;
+    case validation_code::INPUT_ERR:
+      std::cout << "Some input error. Did you enter any numbers? Please\n"
+                << "try again.\n"
+                << std::endl;
+      return loop_control::CONTINUE;
+    };
+  }
+
+  const auto point_pair = std::get<std::tuple<int, int>>(result);
+
+  return loop_control::CONTINUE;
+}
+
+// -----------------------------------------------------------------------------
+validation_result validate(std::string_view input) {
+  if (input.empty())
+    return validation_code::NO_INPUT;
+
+  std::istringstream line(input.data());
+  std::string token;
+  const short MAX_POINTS = 2;
+  int points[MAX_POINTS];
+  short num_points = 0;
+
+  while (line >> token) {
+    std::istringstream token_stream(token);
+    int parsed_number;
+    if (num_points >= MAX_POINTS)
+      return validation_code::TOO_MANY;
+    if (token_stream >> parsed_number) {
+      points[num_points] = parsed_number;
+      num_points++;
+    }
+  }
+
+  if (num_points < MAX_POINTS)
+    return validation_code::NOT_ENOUGH;
+  if (num_points == 0)
+    return validation_code::INPUT_ERR;
+
+  return std::make_tuple(points[0], points[1]);
 }
