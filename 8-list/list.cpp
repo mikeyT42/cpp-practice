@@ -3,8 +3,8 @@
 #include <iostream>
 #include <memory>
 
-#define GROWTH_FACTOR 1.5
-#define INITIAL_LENGTH 10
+#define GROWTH_FACTOR 10
+#define INITIAL_LENGTH GROWTH_FACTOR
 
 // -----------------------------------------------------------------------------
 practice::list::list() {
@@ -18,9 +18,21 @@ practice::list::list() {
 
 // -----------------------------------------------------------------------------
 practice::list::~list() {
+  std::cout << "-----------------------------------------------------\n"
+            << "\t\tDestroying list.\n"
+            << "-----------------------------------------------------\n"
+            << std::endl;
   this->data.reset();
   this->length = 0;
   this->capacity = 0;
+}
+
+// -----------------------------------------------------------------------------
+int &practice::list::operator[](std::size_t i) { return this->data[i]; }
+
+// -----------------------------------------------------------------------------
+const int &practice::list::operator[](std::size_t i) const {
+  return this->data[i];
 }
 
 // -----------------------------------------------------------------------------
@@ -37,7 +49,7 @@ void practice::list::put(const int i) {
 
   if (this->length >= this->capacity) {
     std::cout << "Reallocating." << std::endl;
-    const std::size_t new_capacity = this->capacity * GROWTH_FACTOR;
+    const std::size_t new_capacity = this->capacity + GROWTH_FACTOR;
     std::cout << "new_capacity = " << new_capacity << std::endl;
     auto new_data = std::make_unique<int[]>(new_capacity);
     std::copy(this->data.get(), this->data.get() + this->capacity,

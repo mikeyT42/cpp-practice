@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <cstddef>
+#include <memory>
 
 namespace practice {
 
@@ -18,6 +18,9 @@ public:
   void put(const int i);
   int pop();
   void shrink_to_fit();
+
+  int &operator[](std::size_t i);
+  const int &operator[](std::size_t i) const;
 };
 
 } // namespace practice
