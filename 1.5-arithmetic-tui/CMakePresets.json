@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "cfg",
+      "displayName": "Configure (vcpkg)",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "10.15"
+      }
+    }
+  ]
+}
