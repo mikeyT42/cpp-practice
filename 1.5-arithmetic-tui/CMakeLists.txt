@@ -12,4 +12,5 @@ endif()
 
 find_package(ftxui CONFIG REQUIRED)
 add_executable(main main.cpp)
+target_compile_options(main PRIVATE -Wall -Werror -Wextra)
 target_link_libraries(main PRIVATE ftxui::screen ftxui::dom ftxui::component)
