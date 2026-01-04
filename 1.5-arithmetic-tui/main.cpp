@@ -1,10 +1,17 @@
 #include <cmath>
 #include <cstdlib>
 
-#include "ftxui/component/screen_interactive.hpp"
+#include "ftxui/screen/screen.hpp"
+#include "ftxui/dom/elements.hpp"
 
 int main() {
-  auto screen = ftxui::ScreenInteractive::Fullscreen();
+  auto screen =
+      ftxui::Screen::Create(ftxui::Dimension::Full(), ftxui::Dimension::Full());
+
+  auto window = ftxui::window(ftxui::text("Hi"), ftxui::text("me"));
+  
+  ftxui::Render(screen, window);
+  screen.Print();
 
   return EXIT_SUCCESS;
 }
