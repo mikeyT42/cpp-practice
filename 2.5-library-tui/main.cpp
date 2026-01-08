@@ -97,9 +97,9 @@ int main() {
   // Select row from the second to the last.
   auto content = table.SelectRows(1, -1);
   // Alternate in between 3 colors.
-  content.DecorateCellsAlternateRow(color(ftxui::Color::Blue), 3, 0);
-  content.DecorateCellsAlternateRow(color(ftxui::Color::Cyan), 3, 1);
-  content.DecorateCellsAlternateRow(color(ftxui::Color::White), 3, 2);
+  content.DecorateCellsAlternateRow(color(ftxui::Color::DarkKhaki), 3, 0);
+  content.DecorateCellsAlternateRow(color(ftxui::Color::DarkSeaGreen), 3, 1);
+  content.DecorateCellsAlternateRow(color(ftxui::Color::DarkOrange), 3, 2);
 
   // clang-format off
 
