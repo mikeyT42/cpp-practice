@@ -117,7 +117,7 @@ int main() {
       });
   // clang-format on
 
-  auto window = ftxui::window(ftxui::text("Arithmetic"), document);
+  auto window = ftxui::window(ftxui::text("Library"), document);
 
   auto screen = ftxui::Screen::Create(ftxui::Dimension::Full(),
                                       ftxui::Dimension::Fit(window));
